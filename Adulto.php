@@ -1,9 +1,11 @@
 <?php
+
 function __autoload($className){
 	include_once("models/$className.php");	
 }
 
 $adulto = new Adulto("host","username","password","database");
+//$adulto = new Adulto("internal-db.s202570.gridserver.com", "db202570@72.47.244.14", "3bbcQt2WtV?", "db202570:devcroquetero");
 
 if( ! isset($_POST['action']) ) {
 	print json_encode(0);
@@ -33,10 +35,10 @@ switch( $_POST['action'] ) {
 		print $adulto->updateValue($adultobj);				
 	break;
 
-	case 'search_adulto':
+	case 'searchadulto':
 		$adultobj = new stdClass;
-		$adultobj = json_decode($_POST['adulto']);
-		print $adulto->search($adultobj);		
+		$adultobj = json_decode($_POST['adulto']);// Recibe un json por parte del Cliente y lo decodifica a un array asociativo para la base de datos
+		print $adulto->search($adultobj);
 	break;
 
 }

@@ -166,9 +166,13 @@ function getCreateForm(element) {
 function getBuscarForm(element) {
 	var form = '<div class="input-prepend">';
 		form +=	'<span class="add-on"><i class="icon-home icon-black"></i> SKU</span>';
-		form +=	'<input type="text" id="sku" name="sku" value="" class="input-xlarge" />';		
-		form +=	'</div><br/><br/>';
+		form +=	'<input type="text" id="sku" name="sku" value="" class="input-xlarge"/>';		
+		form +=	'</div><p id="skumsgerror"></p><br/><br/>';
 
+		form +=	'<div class="input-prepend">';
+		form +=	'<span class="add-on"><i class="icon-home icon-black"></i> PESO</span>';
+		form +=	'<input type="text" id="peso" name="peso" class="input-xlarge"/>';
+		form +=	'</div><br/><br/>';
 		
 
 		form +=	'<div class="control-group">';
@@ -186,13 +190,13 @@ function searchAdulto(element) {
 	
 	var Adulto = new Object();
 	Adulto.sku = $('input#sku').val();
-	
+	Adulto.peso = $('input#peso').val();	
 	
 	var adultoJson = JSON.stringify(Adulto);
 	
 	$.post('Adulto.php',
 		{
-			action: 'search_adulto',
+			action: 'searchadulto',
 			adulto: adultoJson
 		},
 		function(data, textStatus) {

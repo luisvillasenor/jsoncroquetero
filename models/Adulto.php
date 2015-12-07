@@ -3,15 +3,35 @@
 class Adulto {
 	
 	private $dbh;
+	private $conn;
 	
 	public function __construct($host,$user,$pass,$db)	{		
-		$this->dbh = new PDO("mysql:host=".$host.";dbname=".$db,$user,$pass);		
+//		$this->dbh = new PDO("mysql:host=".$host.";dbname=".$db,$user,$pass);
+		//$this->conn = new mysqli("localhost", "root", "sECTUREd15", "test");
+		
 	}
 
 	public function getAdultos(){				
-		$sth = $this->dbh->prepare("SELECT * FROM adulto");
-		$sth->execute();
-		return json_encode($sth->fetchAll());
+	
+		$conn = new mysqli("localhost", "root", "sECTUREd15", "test");
+		$result = $conn->query("SELECT sku, producto, presentacion, peso, porcion FROM adulto");
+		if (!$result) { die ('No se puede usar la base de datos : ' . mysql_error()); }
+		// Creamos un array de objetos
+
+		$outp = "[";
+		while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
+		    if ($outp != "[") {$outp .= ",";}
+		    $outp .= '{"sku":"'  . $rs["sku"] . '",';
+		    $outp .= '"producto":"'   . $rs["producto"]        . '",';
+		    $outp .= '"presentacion":"'   . $rs["presentacion"]        . '",';
+		    $outp .= '"peso":"'   . $rs["peso"]        . '",';
+		    $outp .= '"porcion":"'. $rs["porcion"]     . '"}';
+		}
+		$outp .="]";
+
+		$conn->close();
+		return $outp;
+		//return json_encode($rows);
 	}
 
 	public function add($adultobj){		
@@ -32,10 +52,45 @@ class Adulto {
 		return json_encode(1);	
 	}
 
-	public function search($adultobj){		
-		$sth = $this->dbh->prepare("SELECT * FROM adulto WHERE sku=?");
-		$sth->execute(array($adultobj->sku));
-		return json_encode($sth->fetchAll());
+	public function search($adultobj){
+
+		$conn = new mysqli("localhost", "root", "sECTUREd15", "test");
+		$result = $conn->query("SELECT * FROM adulto WHERE sku = '$adultobj->sku' AND peso = '$adultobj->peso' ");
+
+		if (!$result) {
+		    die ('No se puede usar la base de datos : ' . mysql_error());
+		}
+
+		// Creamos un array de objetos
+/*
+		$outp = "[";
+		while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
+		    if ($outp != "[") {$outp .= ",";}
+		    $outp .= '{"sku":"'  . $rs["sku"] . '",';
+		    $outp .= '"producto":"'   . $rs["producto"]        . '",';
+		    $outp .= '"presentacion":"'   . $rs["presentacion"]        . '",';
+		    $outp .= '"peso":"'   . $rs["peso"]        . '",';
+		    $outp .= '"porcion":"'. $rs["porcion"]     . '"}';
+		}
+		$outp .="]";
+*/
+		$rows = array();
+		while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
+		    $rows[] = $rs;
+		}
+
+		$conn->close();
+
+/*
+		return $outp;
+		//return json_encode($fila);
+		mysql_free_result($sth);
+*/
+
+		//$sth = $this->dbh->prepare("SELECT * FROM adulto WHERE sku=? AND peso=?");
+		//$sth->execute(array($adultobj->sku,$adultobj->peso));
+		return json_encode($rows);
+		//return $sth;
 	}
 
 }
