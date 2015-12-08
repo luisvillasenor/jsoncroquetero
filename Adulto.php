@@ -3,7 +3,7 @@ function __autoload($className){
 	include_once("models/$className.php");	
 }
 
-$adulto = new Adulto("host","username","password","database");
+$adulto = new Adulto("localhost","root","sECTUREd1","db202570_devcroquetero");
 
 if( ! isset($_POST['action']) ) {
 	print json_encode(0);
