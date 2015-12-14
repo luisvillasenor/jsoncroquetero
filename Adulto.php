@@ -12,9 +12,9 @@ if( ! isset($_GET['action']) ) {
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
 	# code...
 
-	$host = "internal-db.s202570.gridserver.com";
-	$user = "db202570";
-	$pass = "3bbcQt2WtV?";
+	$host = "localhost";
+	$user = "root";
+	$pass = "sECTUREd1";
 	$db = "db202570_devcroquetero";
 
 	$sku = $_GET['sku'];
