@@ -193,10 +193,10 @@ function searchAdulto(element) {
 	
 	var adultoJson = JSON.stringify(Adulto);
 	
-	$.post('Adulto.php',
+	$.get('Adulto.php',
 		{
-			action: 'search_adulto',
-			adulto: adultoJson
+			sku: $('input#sku').val(),
+			peso: $('input#peso').val()
 		},
 		function(data, textStatus) {
 			renderAdultoList(data);
