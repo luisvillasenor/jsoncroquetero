@@ -14,6 +14,12 @@ class Adulto {
 		return json_encode($sth->fetchAll(PDO::FETCH_ASSOC));
 	}
 
+	public function getSkuList(){				
+		$sth = $this->dbh->prepare("SELECT * FROM adulto GROUP BY sku");
+		$sth->execute();
+		return json_encode($sth->fetchAll(PDO::FETCH_ASSOC));
+	}
+
 	public function add($adultobj){		
 		$sth = $this->dbh->prepare("INSERT INTO adulto(sku, producto, presentacion, peso, porcion) VALUES (?, ?, ?, ?, ?)");
 		$sth->execute(array($adultobj->sku, $adultobj->producto, $adultobj->presentacion, $adultobj->peso, $adultobj->porcion));		
@@ -33,8 +39,8 @@ class Adulto {
 	}
 
 	public function search($adultobj){		
-		$sth = $this->dbh->prepare('SELECT sku, producto, presentacion, peso, porcion FROM adulto WHERE sku=? AND peso=?');
-		$sth->execute(array($adultobj->sku, $adultobj->peso));
+		$sth = $this->dbh->prepare('SELECT sku, producto, presentacion, peso, porcion FROM adulto WHERE sku=?');
+		$sth->execute(array($adultobj->sku));
 		return json_encode($sth->fetchAll(PDO::FETCH_ASSOC));
 	}
 

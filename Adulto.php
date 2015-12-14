@@ -3,8 +3,7 @@ function __autoload($className){
 	include_once("models/$className.php");	
 }
 
-//$adulto = new Adulto("internal-db.s202570.gridserver.com","db202570","3bbcQt2WtV?","db202570_devcroquetero");
-$adulto = new Adulto("localhost","root","sECTUREd1","db202570_devcroquetero");
+// Ver archvio local
 
 if( ! isset($_POST['action']) ) {
 	print json_encode(0);
@@ -14,6 +13,10 @@ if( ! isset($_POST['action']) ) {
 switch( $_POST['action'] ) {
 	case 'get_adultos':
 		print $adulto->getAdultos();		
+	break;
+
+	case 'get_skus':
+		print $adulto->getSkuList();		
 	break;
 	
 	case 'add_adulto':

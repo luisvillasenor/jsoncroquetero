@@ -1,8 +1,10 @@
 $(function() {
-	$(document).on("click", "a#adulto_list", function(){ getAdultoList(this); });	
+	$(document).on("click", "a#adulto_list", function(){ getAdultoList(this); });
+	$(document).on("click", "a#sku_list", function(){ getSkuList(this); });
 	$(document).on("click", "a#create_adulto_form", function(){ getCreateForm(this); });
 	$(document).on("click", "button#add_adulto", function(){ addAdulto(this); });
 	$(document).on("click", "a.delete_confirm", function(){ deleteConfirmation(this); });
+	$(document).on("click", "a.sku_confirm", function(){ getOneSkuList(this); });
 	$(document).on("click", "button.delete", function(){ deleteAdulto(this); });
 	$(document).on("dblclick", "td.edit", function(){ makeEditable(this); });
 	$(document).on("blur", "input#editbox", function(){ removeEditable(this) });
@@ -82,6 +84,38 @@ function getAdultoList(element) {
 	);
 }
 
+function getSkuList(element) {
+	
+	$('#indicator').show();
+	
+	$.post('Adulto.php',
+		{
+			action: 'get_skus'				
+		},
+		function(data, textStatus) {
+			renderSkuList(data);
+			$('#indicator').hide();
+		}, 
+		"json"		
+	);
+}
+
+function getOneSkuList(element) {
+	
+	$('#indicator').show();
+	
+	$.post('Adulto.php',
+		{
+			action: 'get_one_sku'				
+		},
+		function(data, textStatus) {
+			renderAdultoList(data);
+			$('#indicator').hide();
+		}, 
+		"json"		
+	);
+}
+
 function renderAdultoList(jsonData) {
 	
 	var table = '<table width="600" cellpadding="5" class="table table-hover table-bordered"><thead><tr><th scope="col">SKU</th><th scope="col">PRODUCTO</th><th scope="col">PRESENTACION</th><th scope="col">PESO</th><th scope="col">PORCION</th><th scope="col"></th></tr></thead><tbody>';
@@ -94,6 +128,23 @@ function renderAdultoList(jsonData) {
 		table += '<td class="edit" field="peso" adulto_id="'+adulto.id+'">'+adulto.peso+'</td>';
 		table += '<td class="edit" field="porcion" adulto_id="'+adulto.id+'">'+adulto.porcion+'</td>';
 		table += '<td><a href="javascript:void(0);" adulto_id="'+adulto.id+'" class="delete_confirm btn btn-danger"><i class="icon-remove icon-white"></i></a></td>';
+		table += '</tr>';
+    });
+	
+	table += '</tbody></table>';
+	
+	$('div#content').html(table);
+}
+
+function renderSkuList(jsonData) {
+	
+	var table = '<table width="600" cellpadding="5" class="table table-hover table-bordered"><thead><tr><th scope="col">SKU</th><th scope="col">PRODUCTO</th></tr></thead><tbody>';
+
+	$.each( jsonData, function( index, adulto){     
+		table += '<tr>';
+		table += '<td class="edit" field="sku" adulto_id="'+adulto.id+'">'+adulto.sku+'</td>';
+		table += '<td class="edit" field="producto" adulto_id="'+adulto.id+'">'+adulto.producto+'</td>';
+		
 		table += '</tr>';
     });
 	
@@ -169,11 +220,6 @@ function getBuscarForm(element) {
 		form +=	'<input type="text" id="sku" name="sku" value="" class="input-xlarge" />';		
 		form +=	'</div><br/><br/>';
 
-		form +=	'<div class="input-prepend">';
-		form +=	'<span class="add-on"><i class="icon-home icon-black"></i> PESO</span>';
-		form +=	'<input type="text" id="peso" name="peso" class="input-xlarge"/>';
-		form +=	'</div><br/><br/>';		
-
 		form +=	'<div class="control-group">';
 		form +=	'<div class="">';		
 		form +=	'<button type="button" id="search_adulto" class="btn btn-default"><i class="icon-search icon-white"></i> Buscar Producto</button>';
@@ -189,7 +235,7 @@ function searchAdulto(element) {
 	
 	var Adulto = new Object();
 	Adulto.sku = $('input#sku').val();
-	Adulto.peso = $('input#peso').val();	
+
 	
 	var adultoJson = JSON.stringify(Adulto);
 	
