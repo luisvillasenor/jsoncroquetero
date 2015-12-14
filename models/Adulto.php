@@ -33,8 +33,8 @@ class Adulto {
 	}
 
 	public function search($adultobj){		
-		$sth = $this->dbh->prepare("SELECT * FROM adulto WHERE sku=?");
-		$sth->execute(array($adultobj->sku));
+		$sth = $this->dbh->prepare("SELECT * FROM adulto WHERE sku=? AND peso=?");
+		$sth->execute(array($adultobj->sku,$adultobj->peso));
 		return json_encode($sth->fetchAll());
 	}
 

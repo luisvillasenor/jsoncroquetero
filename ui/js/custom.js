@@ -6,7 +6,7 @@ $(function() {
 	$(document).on("click", "button.delete", function(){ deleteAdulto(this); });
 	$(document).on("dblclick", "td.edit", function(){ makeEditable(this); });
 	$(document).on("blur", "input#editbox", function(){ removeEditable(this) });
-	$(document).on("click", "a#buscar_adulto_form", function(){ getBuscarForm(this); });
+	$(document).on("click", "a#search_adulto_form", function(){ getBuscarForm(this); });
 	$(document).on("click", "button#search_adulto", function(){ searchAdulto(this); });
 });
 
@@ -169,7 +169,10 @@ function getBuscarForm(element) {
 		form +=	'<input type="text" id="sku" name="sku" value="" class="input-xlarge" />';		
 		form +=	'</div><br/><br/>';
 
-		
+		form +=	'<div class="input-prepend">';
+		form +=	'<span class="add-on"><i class="icon-home icon-black"></i> PESO</span>';
+		form +=	'<input type="text" id="peso" name="peso" class="input-xlarge"/>';
+		form +=	'</div><br/><br/>';		
 
 		form +=	'<div class="control-group">';
 		form +=	'<div class="">';		
@@ -186,11 +189,11 @@ function searchAdulto(element) {
 	
 	var Adulto = new Object();
 	Adulto.sku = $('input#sku').val();
-	
+	Adulto.peso = $('input#peso').val();	
 	
 	var adultoJson = JSON.stringify(Adulto);
 	
-	$.post('Adulto.php',
+	$.get('Adulto.php',
 		{
 			action: 'search_adulto',
 			adulto: adultoJson
