@@ -193,7 +193,7 @@ function searchAdulto(element) {
 	
 	var adultoJson = JSON.stringify(Adulto);
 	
-	$.get('Adulto.php',
+	$.post('Adulto.php',
 		{
 			action: 'search_adulto',
 			adulto: adultoJson

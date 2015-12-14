@@ -11,7 +11,7 @@ class Adulto {
 	public function getAdultos(){				
 		$sth = $this->dbh->prepare("SELECT * FROM adulto");
 		$sth->execute();
-		return json_encode($sth->fetchAll());
+		return json_encode($sth->fetchAll(PDO::FETCH_ASSOC));
 	}
 
 	public function add($adultobj){		
@@ -33,9 +33,9 @@ class Adulto {
 	}
 
 	public function search($adultobj){		
-		$sth = $this->dbh->prepare("SELECT * FROM adulto WHERE sku=? AND peso=?");
+		$sth = $this->dbh->prepare('SELECT sku, producto, presentacion, peso, porcion FROM adulto WHERE sku=? AND peso=?');
 		$sth->execute(array($adultobj->sku, $adultobj->peso));
-		return json_encode($sth->fetchAll());
+		return json_encode($sth->fetchAll(PDO::FETCH_ASSOC));
 	}
 
 }
