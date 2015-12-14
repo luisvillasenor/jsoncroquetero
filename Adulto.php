@@ -3,6 +3,7 @@ function __autoload($className){
 	include_once("models/$className.php");	
 }
 
+//$adulto = new Adulto("internal-db.s202570.gridserver.com","db202570","3bbcQt2WtV?","db202570_devcroquetero");
 $adulto = new Adulto("localhost","root","sECTUREd1","db202570_devcroquetero");
 
 if( ! isset($_REQUEST['action']) ) {
